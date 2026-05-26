@@ -30,11 +30,11 @@ fi
 # --- Resolve version ---
 
 if [ -n "$VERSION" ]; then
-    TAG="v$VERSION"
-    VERSION_NUM="$VERSION"
+    VERSION_NUM="${VERSION#v}"
+    TAG="v$VERSION_NUM"
 else
     echo "Looking up latest version..."
-    TAG=$(curl -fsSL "$GITHUB_API/$REPO/releases/latest" 2>/dev/null | grep '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
+    TAG=$(curl -fsSL "$GITHUB_API/$REPO/releases/latest" 2>/dev/null | grep -m 1 '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
     if [ -z "$TAG" ]; then
         echo "Error: Could not determine latest version."
         echo "Check the repository: https://github.com/$REPO"
@@ -58,7 +58,7 @@ fi
 
 mkdir -p "$TARGET_DIR"
 
-TMPFILE=$(mktemp /tmp/$BIN_NAME.XXXXXX.tar.gz)
+TMPFILE=$(mktemp "/tmp/$BIN_NAME.XXXXXX.tar.gz")
 cleanup() { rm -f "$TMPFILE"; }
 trap cleanup EXIT
 
@@ -74,11 +74,16 @@ fi
 echo "Extracting..."
 tar -xzf "$TMPFILE" -C "$TARGET_DIR"
 
+if [ ! -f "$TARGET_DIR/dist/cli.js" ]; then
+    echo "Error: Expected entry point not found after extraction."
+    exit 1
+fi
+
 # --- Install dependencies ---
 
 echo "Installing dependencies..."
 cd "$TARGET_DIR"
-if ! npm install --production --ignore-scripts 2>/dev/null; then
+if ! npm install --production --ignore-scripts; then
     echo "Error: npm install failed."
     echo "Try running manually: cd $TARGET_DIR && npm install --production --verbose"
     exit 1
@@ -91,7 +96,7 @@ if [ -w "/usr/local/bin" ]; then
 else
     BIN_DIR="$HOME/.local/bin"
     mkdir -p "$BIN_DIR"
-    if ! echo "$PATH" | grep -q "$BIN_DIR"; then
+    if ! echo "$PATH" | grep -Fq "$BIN_DIR"; then
         echo ""
         echo "Note: Add $BIN_DIR to your PATH:"
         echo "  echo 'export PATH=\"$BIN_DIR:\$PATH\"' >> ~/.zshrc"
