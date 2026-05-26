@@ -73,7 +73,7 @@ export async function loadFont(
   const fontPath = join(fontDir, `${normalized}-variable.ttf`);
 
   if (!existsSync(fontPath)) {
-    await downloadFont(fontName, fontDir, fontPath);
+    await downloadFont(fontName, fontDir, fontPath, options.weight);
   }
 
   const buffer = await readFile(fontPath);
@@ -97,29 +97,42 @@ function extractAxes(font: opentype.Font): FontAxisInfo[] {
   }));
 }
 
+const TTF_USER_AGENT =
+  "Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
+
 async function downloadFont(
   fontName: string,
   fontDir: string,
-  fontPath: string
+  fontPath: string,
+  weight?: number
 ): Promise<void> {
-  const cssUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@100..900`;
+  // Try variable font first (range syntax), then fall back to static weight
+  const attempts: string[] = [
+    `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@100..900`,
+    `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@${weight ?? 400}`,
+  ];
 
-  const cssResponse = await fetch(cssUrl, {
-    headers: {
-      // Android UA to get direct TTF URLs (opentype.js v1 does not support WOFF2/EOT)
-      "User-Agent":
-        "Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
-    },
-  });
+  let css = "";
+  let cssResponse: Response | undefined;
 
-  if (!cssResponse.ok) {
+  for (const cssUrl of attempts) {
+    cssResponse = await fetch(cssUrl, {
+      headers: { "User-Agent": TTF_USER_AGENT },
+    });
+
+    if (cssResponse.ok) {
+      css = await cssResponse.text();
+      break;
+    }
+  }
+
+  if (!cssResponse?.ok) {
     throw new Error(
       `Google Font "${fontName}" not found. Check the font name at https://fonts.google.com`
     );
   }
 
-  const css = await cssResponse.text();
-  const urlMatch = css.match(/src:\s*url\(([^)]+)\)\s*format\('truetype'\)/);
+  const urlMatch = css.match(/src:\s*url\(([^)]+)\)\s*format\(['"]truetype['"]\)/);
   if (!urlMatch) {
     throw new Error(`Could not extract font file URL for "${fontName}" from Google Fonts CSS.`);
   }

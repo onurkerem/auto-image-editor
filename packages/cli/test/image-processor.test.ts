@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import sharp from "sharp";
 import { resolveFormat, compositeText } from "../src/services/image-processor.js";
 import { unlink, mkdir } from "node:fs/promises";
@@ -13,10 +13,6 @@ describe("image processor", () => {
   });
 
   describe("resolveFormat", () => {
-    it("uses explicit format flag", () => {
-      expect(resolveFormat({ format: "png", outputPath: "out.jpg", inputPath: "in.jpg" })).toBe("png");
-    });
-
     it("infers from output extension", () => {
       expect(resolveFormat({ outputPath: "out.webp", inputPath: "in.jpg" })).toBe("webp");
     });

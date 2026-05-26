@@ -23,11 +23,19 @@ auto-image-editor/
 ## Commands
 
 ```bash
+# CLI
 cd packages/cli
 npm install
 npm test           # Run tests
 npm run dev        # Run CLI in dev mode
 npm run build      # Compile TypeScript
+
+# Website
+cd packages/website
+npm install
+npm run dev        # Start dev server
+npm run build      # Build static site
+npm run preview    # Preview production build
 ```
 
 ## Guidelines

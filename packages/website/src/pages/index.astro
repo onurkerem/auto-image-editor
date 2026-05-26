@@ -1,0 +1,335 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh | sh";
+---
+
+<Layout title="auto-image-editor — Text Overlays from the CLI">
+  <!-- Hero -->
+  <header class="pt-32 pb-24 px-8 relative overflow-hidden bg-surface-bright flex flex-col items-center text-center border-b border-surface-container-low">
+    <div class="max-w-4xl mx-auto relative z-10">
+      <h1 class="text-6xl md:text-8xl font-headline font-extrabold tracking-tighter text-on-surface mb-6 leading-none">
+        auto-image-editor
+      </h1>
+      <p class="text-xl md:text-2xl font-body text-on-surface-variant max-w-2xl mx-auto mb-12 font-light">
+        Add text overlays to images from the command line. Google Fonts, variable axes, and locale-aware casing — no GUI needed.
+      </p>
+
+      <!-- Hero Terminal -->
+      <div class="bg-inverse-surface rounded-lg max-w-2xl mx-auto text-left shadow-[0px_24px_48px_rgba(45,52,53,0.15)] ring-1 ring-white/10 relative -mb-16 z-20">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+            <div class="w-3 h-3 rounded-full bg-[#febc2e]"></div>
+            <div class="w-3 h-3 rounded-full bg-[#28c840]"></div>
+          </div>
+          <span class="text-xs font-mono text-on-surface-variant/40 tracking-wide">bash</span>
+          <button class="flex items-center gap-1 text-on-surface-variant/40 hover:text-inverse-on-surface transition-colors cursor-pointer p-1 rounded hover:bg-white/[0.08]" title="Copy to clipboard" id="hero-copy-btn">
+            <span class="material-symbols-outlined text-base">content_copy</span>
+          </button>
+        </div>
+        <div class="px-6 py-5">
+          <code class="font-mono text-base leading-relaxed break-all block">
+            <span class="text-tertiary-fixed select-none">$ </span><span class="text-[#8b9cf7]">curl</span> <span class="text-on-surface-variant/70">-fsSL</span> <span class="text-inverse-on-surface">https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh</span> <span class="text-on-surface-variant/70">|</span> <span class="text-[#8b9cf7]">sh</span>
+          </code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid background -->
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full pointer-events-none opacity-[0.03]"
+      style="background-image: linear-gradient(#2d3435 1px, transparent 1px), linear-gradient(90deg, #2d3435 1px, transparent 1px); background-size: 64px 64px;"
+    >
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section class="py-32 px-8 bg-surface-container-low mt-16" id="features">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-headline font-bold mb-16 text-center text-on-surface tracking-tight">
+        Core Capabilities
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Google Fonts -->
+        <div class="bg-surface-container-lowest p-8 border border-surface-container-highest transition-colors hover:border-outline-variant/30 group">
+          <div class="w-12 h-12 bg-surface-container flex items-center justify-center rounded mb-6 text-on-surface group-hover:bg-primary group-hover:text-on-primary transition-colors">
+            <span class="material-symbols-outlined">text_fields</span>
+          </div>
+          <h3 class="text-xl font-headline font-bold mb-3 text-on-surface">Google Fonts</h3>
+          <p class="font-body text-on-surface-variant leading-relaxed">
+            Use any Google Font family by name. Fonts are downloaded and cached automatically — no manual installation required.
+          </p>
+        </div>
+        <!-- Variable Font Axes -->
+        <div class="bg-surface-container-lowest p-8 border border-surface-container-highest transition-colors hover:border-outline-variant/30 group">
+          <div class="w-12 h-12 bg-surface-container flex items-center justify-center rounded mb-6 text-on-surface group-hover:bg-primary group-hover:text-on-primary transition-colors">
+            <span class="material-symbols-outlined">tune</span>
+          </div>
+          <h3 class="text-xl font-headline font-bold mb-3 text-on-surface">Variable Font Axes</h3>
+          <p class="font-body text-on-surface-variant leading-relaxed">
+            Fine-tune weight (100–900) and width axes for precise typographic control. Leverages variable font technology for smooth interpolation.
+          </p>
+        </div>
+        <!-- Locale-Aware Casing -->
+        <div class="bg-surface-container-lowest p-8 border border-surface-container-highest transition-colors hover:border-outline-variant/30 group">
+          <div class="w-12 h-12 bg-surface-container flex items-center justify-center rounded mb-6 text-on-surface group-hover:bg-primary group-hover:text-on-primary transition-colors">
+            <span class="material-symbols-outlined">language</span>
+          </div>
+          <h3 class="text-xl font-headline font-bold mb-3 text-on-surface">Locale-Aware Casing</h3>
+          <p class="font-body text-on-surface-variant leading-relaxed">
+            Uppercase conversion respects language rules. Turkish dotted-i, German sharp-s, and other locale-specific behavior handled correctly.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Usage -->
+  <section class="py-32 px-8 bg-surface border-y border-surface-container-low" id="usage">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
+      <div class="w-full lg:w-1/2">
+        <h2 class="text-3xl md:text-4xl font-headline font-bold mb-6 text-on-surface tracking-tight">Usage</h2>
+        <p class="font-body text-lg text-on-surface-variant mb-8 leading-relaxed">
+          A single command to add perfectly positioned text to any image. Supports PNG, JPEG, and WebP — output format is inferred from the file extension.
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-tertiary mt-1">check_circle</span>
+            <p class="font-body text-on-surface-variant">Text is auto-sized to fit within the bounding box you define</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-tertiary mt-1">check_circle</span>
+            <p class="font-body text-on-surface-variant">Position with percentage-based insets — responsive to any image dimensions</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-tertiary mt-1">check_circle</span>
+            <p class="font-body text-on-surface-variant">Composable in scripts and CI pipelines — zero interactive prompts</p>
+          </div>
+        </div>
+      </div>
+      <div class="w-full lg:w-1/2">
+        <div class="bg-inverse-surface rounded-lg p-6 text-left shadow-[0px_24px_48px_rgba(45,52,53,0.06)] ring-1 ring-white/10 w-full">
+          <div class="flex items-center justify-between mb-4 border-b border-surface-variant/20 pb-2">
+            <span class="text-xs font-mono text-on-surface-variant uppercase tracking-widest">Terminal</span>
+          </div>
+          <div class="font-mono text-sm space-y-4">
+            <div>
+              <span class="text-on-surface-variant opacity-70"># Basic text overlay</span><br />
+              <span class="text-tertiary-fixed">$</span> <span class="text-[#8b9cf7]">auto-image-editor</span> <span class="text-inverse-on-surface">add-text</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--input</span> <span class="text-inverse-on-surface">photo.jpg</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--output</span> <span class="text-inverse-on-surface">out.jpg</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--text</span> <span class="text-inverse-on-surface">"Hello World"</span>
+            </div>
+            <div>
+              <span class="text-on-surface-variant opacity-70"># Custom font, weight, and positioning</span><br />
+              <span class="text-tertiary-fixed">$</span> <span class="text-[#8b9cf7]">auto-image-editor</span> <span class="text-inverse-on-surface">add-text</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--input</span> <span class="text-inverse-on-surface">banner.png</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--output</span> <span class="text-inverse-on-surface">output.png</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--text</span> <span class="text-inverse-on-surface">"SALE"</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--font</span> <span class="text-inverse-on-surface">"Oswald"</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--weight</span> <span class="text-inverse-on-surface">700</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--top</span> <span class="text-inverse-on-surface">70%</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--bottom</span> <span class="text-inverse-on-surface">5%</span>
+            </div>
+            <div>
+              <span class="text-on-surface-variant opacity-70"># Turkish locale with locale-aware uppercase</span><br />
+              <span class="text-tertiary-fixed">$</span> <span class="text-[#8b9cf7]">auto-image-editor</span> <span class="text-inverse-on-surface">add-text</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--input</span> <span class="text-inverse-on-surface">cover.jpg</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--output</span> <span class="text-inverse-on-surface">cover-out.jpg</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--text</span> <span class="text-inverse-on-surface">"İstanbul"</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--lang</span> <span class="text-inverse-on-surface">tr</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Options -->
+  <section class="py-32 px-8 bg-surface-container-low" id="options">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-headline font-bold mb-8 text-center text-on-surface tracking-tight">
+        Options
+      </h2>
+      <p class="font-body text-lg text-on-surface-variant mb-16 text-center max-w-3xl mx-auto">
+        Every parameter has sensible defaults. Override only what you need.
+      </p>
+      <div class="bg-surface-container-lowest p-12 border border-surface-container-highest">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
+          <div class="space-y-6">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--input</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">required</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Source image path (PNG, JPEG, WebP)</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--output</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">required</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Output image path — format inferred from extension</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--text</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">required</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Text to overlay on the image</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--font</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: Geom</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Google Font family name</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--color</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: #FFFFFF</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Text color</p>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--weight</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: 600</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Font weight axis (100–900)</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--width</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: 100</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Font width axis percentage</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--lang</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: tr</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Language code for locale-aware casing</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--top / --bottom</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">60% / 6%</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Vertical text box edges (percentage or pixels)</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--left / --right</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">10% / 10%</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Horizontal text box edges (percentage or pixels)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flow -->
+  <section class="py-32 px-8 bg-surface" id="flow">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-headline font-bold mb-8 text-center text-on-surface tracking-tight">
+        How It Works
+      </h2>
+      <p class="font-body text-lg text-on-surface-variant mb-16 text-center max-w-3xl mx-auto">
+        Your image and text go in. A composited image comes out. No temporary files, no GUI, no manual editing.
+      </p>
+      <div class="bg-surface-container-lowest p-12 border border-surface-container-highest flex flex-col md:flex-row gap-12 items-stretch">
+        <!-- Input -->
+        <div class="flex-1">
+          <h4 class="font-headline font-bold text-on-surface mb-6 border-b border-surface-container-highest pb-2">Input</h4>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-lg">image</span>
+              <span class="font-mono text-sm text-on-surface">photo.jpg</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-lg">text_fields</span>
+              <span class="font-mono text-sm text-on-surface">--text "Hello World"</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-lg">tune</span>
+              <span class="font-mono text-sm text-on-surface">--font, --weight, --color</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-lg">open_with</span>
+              <span class="font-mono text-sm text-on-surface">--top, --bottom, --left, --right</span>
+            </div>
+          </div>
+        </div>
+        <!-- Connector -->
+        <div class="hidden md:flex flex-col items-center justify-center text-surface-container-highest">
+          <div class="h-full w-px bg-surface-container-highest"></div>
+          <div class="bg-surface-container-lowest p-2 border border-surface-container-highest rounded-full my-4 flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-surface-variant leading-none">arrow_forward</span>
+          </div>
+          <div class="h-full w-px bg-surface-container-highest"></div>
+        </div>
+        <!-- Output -->
+        <div class="flex-1">
+          <h4 class="font-headline font-bold text-on-surface mb-6 border-b border-surface-container-highest pb-2">Output</h4>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-tertiary text-lg">check_circle</span>
+              <span class="font-mono text-sm text-on-surface">out.jpg</span>
+            </div>
+            <div class="flex items-center gap-3 ml-4">
+              <span class="material-symbols-outlined text-on-surface-variant text-sm">subdirectory_arrow_right</span>
+              <span class="font-body text-sm text-on-surface-variant">Original image preserved</span>
+            </div>
+            <div class="flex items-center gap-3 ml-4">
+              <span class="material-symbols-outlined text-on-surface-variant text-sm">subdirectory_arrow_right</span>
+              <span class="font-body text-sm text-on-surface-variant">Text rendered as vector SVG, composited via Sharp</span>
+            </div>
+            <div class="flex items-center gap-3 ml-4">
+              <span class="material-symbols-outlined text-on-surface-variant text-sm">subdirectory_arrow_right</span>
+              <span class="font-body text-sm text-on-surface-variant">Format inferred from output extension</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-8 bg-surface-container-low border-t border-surface-container-highest">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="font-body text-sm text-on-surface-variant">
+        auto-image-editor — MIT License
+      </p>
+      <a
+        href="https://github.com/onurkerem/auto-image-editor"
+        class="flex items-center gap-2 font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="material-symbols-outlined text-base">code</span>
+        View on GitHub
+      </a>
+    </div>
+  </footer>
+</Layout>
+
+<script>
+  document.getElementById("hero-copy-btn")?.addEventListener("click", async (e) => {
+    const btn = e.currentTarget as HTMLElement;
+    const code = `curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh | sh`;
+    await navigator.clipboard.writeText(code);
+    const icon = btn.querySelector(".material-symbols-outlined");
+    if (icon) {
+      icon.textContent = "check";
+      setTimeout(() => { icon.textContent = "content_copy"; }, 2000);
+    }
+  });
+</script>

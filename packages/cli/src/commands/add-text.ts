@@ -13,7 +13,6 @@ export function registerAddTextCommand(program: Command): void {
     .requiredOption("--input <path>", "Path to source image")
     .requiredOption("--output <path>", "Path for output image")
     .requiredOption("--text <string>", "Text to place on the image")
-    .option("--format <format>", "Output format: jpeg, png, webp")
     .option("--lang <code>", "Language code for locale-aware casing", "tr")
     .option("--uppercase <boolean>", "Convert text to uppercase", "true")
     .option("--font <name>", "Google Font family name", "Geom")
@@ -39,7 +38,6 @@ interface AddTextOptions {
   input: string;
   output: string;
   text: string;
-  format?: string;
   lang: string;
   uppercase: string;
   font: string;
@@ -68,7 +66,6 @@ export async function addTextAction(opts: AddTextOptions): Promise<void> {
 
   // Resolve format
   const format = resolveFormat({
-    format: opts.format,
     outputPath: opts.output,
     inputPath: opts.input,
   });
