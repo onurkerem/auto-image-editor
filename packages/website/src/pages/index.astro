@@ -96,7 +96,7 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
         <div class="space-y-4">
           <div class="flex items-start gap-3">
             <span class="material-symbols-outlined text-tertiary mt-1">check_circle</span>
-            <p class="font-body text-on-surface-variant">Text is auto-sized to fit within the bounding box you define</p>
+            <p class="font-body text-on-surface-variant">Text is auto-sized with yellow fill, heavy black outline, and italic slant by default</p>
           </div>
           <div class="flex items-start gap-3">
             <span class="material-symbols-outlined text-tertiary mt-1">check_circle</span>
@@ -189,16 +189,16 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
             <div>
               <div class="flex items-center gap-2 mb-1">
                 <code class="font-mono text-sm text-tertiary font-semibold">--color</code>
-                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: #FFFFFF</span>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: #FFE600</span>
               </div>
-              <p class="font-body text-sm text-on-surface-variant">Text color</p>
+              <p class="font-body text-sm text-on-surface-variant">Text fill color; black outline is applied automatically</p>
             </div>
           </div>
           <div class="space-y-6">
             <div>
               <div class="flex items-center gap-2 mb-1">
                 <code class="font-mono text-sm text-tertiary font-semibold">--weight</code>
-                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: 600</span>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: 900</span>
               </div>
               <p class="font-body text-sm text-on-surface-variant">Font weight axis (100–900)</p>
             </div>
@@ -208,6 +208,13 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
                 <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: 100</span>
               </div>
               <p class="font-body text-sm text-on-surface-variant">Font width axis percentage</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--italic</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: true</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Apply italic slant to the text</p>
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">

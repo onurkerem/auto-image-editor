@@ -56,10 +56,42 @@ describe("text renderer", () => {
       const result = autoSizeAndRender(font, "AB", {
         boxWidth: 500,
         boxHeight: 100,
-        color: "#FFFFFF",
+        color: "#FFE600",
       });
       expect(result.svg).toContain('width="500"');
       expect(result.svg).toContain('height="100"');
+    });
+
+    it("renders the default thumbnail style with yellow fill and black outline", () => {
+      const result = autoSizeAndRender(font, "AB", {
+        boxWidth: 500,
+        boxHeight: 100,
+        color: "#FFE600",
+        italic: true,
+      });
+
+      const outlineIndex = result.svg.indexOf('stroke="#000000"');
+      const fillIndex = result.svg.indexOf('fill="#FFE600"');
+      const strokeWidth = result.svg.match(/stroke-width="(\d+)"/)?.[1];
+
+      expect(outlineIndex).toBeGreaterThan(-1);
+      expect(fillIndex).toBeGreaterThan(-1);
+      expect(outlineIndex).toBeLessThan(fillIndex);
+      expect(result.svg).toContain('stroke-linejoin="round"');
+      expect(Number(strokeWidth)).toBeGreaterThanOrEqual(12);
+      expect(result.svg).toContain('transform="translate');
+      expect(result.svg).toContain("skewX(-10)");
+    });
+
+    it("centers italic slant around the text box instead of pushing text to one side", () => {
+      const result = autoSizeAndRender(font, "AB", {
+        boxWidth: 500,
+        boxHeight: 100,
+        color: "#FFE600",
+        italic: true,
+      });
+
+      expect(result.svg).toContain('transform="translate(9 0) skewX(-10)"');
     });
   });
 });

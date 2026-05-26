@@ -1,12 +1,14 @@
 {
   "name": "auto-image-editor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CLI tool for adding text overlays to images",
   "type": "module",
   "bin": {
     "auto-image-editor": "./dist/cli.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prepublishOnly": "echo 'This package is distributed via GitHub Releases only. Use the release workflow.' && exit 1",
     "build": "tsc",

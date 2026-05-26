@@ -16,9 +16,10 @@ export function registerAddTextCommand(program: Command): void {
     .option("--lang <code>", "Language code for locale-aware casing", "tr")
     .option("--uppercase <boolean>", "Convert text to uppercase", "true")
     .option("--font <name>", "Google Font family name", "Geom")
-    .option("--color <color>", "Text color", "#FFFFFF")
-    .option("--weight <number>", "Font weight axis", "600")
+    .option("--color <color>", "Text color", "#FFE600")
+    .option("--weight <number>", "Font weight axis", "900")
     .option("--width <number>", "Font width axis", "100")
+    .option("--italic <boolean>", "Apply italic slant to text", "true")
     .option("--top <value>", "Top edge of text box", "60%")
     .option("--bottom <value>", "Bottom edge of text box", "6%")
     .option("--left <value>", "Left edge of text box", "10%")
@@ -44,6 +45,7 @@ interface AddTextOptions {
   color: string;
   weight: string;
   width: string;
+  italic: string;
   top: string;
   bottom: string;
   left: string;
@@ -93,6 +95,7 @@ export async function addTextAction(opts: AddTextOptions): Promise<void> {
     boxWidth: Math.round(box.width),
     boxHeight: Math.round(box.height),
     color: opts.color,
+    italic: opts.italic !== "false",
   });
 
   // Composite and write output

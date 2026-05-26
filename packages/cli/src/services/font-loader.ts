@@ -17,6 +17,11 @@ export interface FontLoadResult {
   axes: FontAxisInfo[];
 }
 
+interface FontLoadOptions {
+  weight?: number;
+  width?: number;
+}
+
 export function validateFontAxes(
   fontName: string,
   axes: FontAxisInfo[],
@@ -63,17 +68,26 @@ function normalizeFontName(name: string): string {
   return name.toLowerCase().replace(/\s+/g, "-");
 }
 
+export function getFontCacheFileName(
+  fontName: string,
+  options: FontLoadOptions = {}
+): string {
+  const normalized = normalizeFontName(fontName);
+  const weight = options.weight ?? 400;
+  return `${normalized}-wght-${weight}.ttf`;
+}
+
 export async function loadFont(
   fontName: string,
-  options: { weight?: number; width?: number } = {}
+  options: FontLoadOptions = {}
 ): Promise<FontLoadResult> {
   const cacheDir = getCacheDir();
   const normalized = normalizeFontName(fontName);
   const fontDir = join(cacheDir, normalized);
-  const fontPath = join(fontDir, `${normalized}-variable.ttf`);
+  const fontPath = join(fontDir, getFontCacheFileName(fontName, options));
 
   if (!existsSync(fontPath)) {
-    await downloadFont(fontName, fontDir, fontPath, options.weight);
+    await downloadFont(fontName, fontDir, fontPath, options);
   }
 
   const buffer = await readFile(fontPath);
@@ -104,13 +118,9 @@ async function downloadFont(
   fontName: string,
   fontDir: string,
   fontPath: string,
-  weight?: number
+  options: FontLoadOptions
 ): Promise<void> {
-  // Try variable font first (range syntax), then fall back to static weight
-  const attempts: string[] = [
-    `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@100..900`,
-    `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@${weight ?? 400}`,
-  ];
+  const attempts = buildGoogleFontsCssUrls(fontName, options);
 
   let css = "";
   let cssResponse: Response | undefined;
@@ -146,4 +156,18 @@ async function downloadFont(
 
   await mkdir(fontDir, { recursive: true });
   await writeFile(fontPath, fontBuffer);
+}
+
+export function buildGoogleFontsCssUrls(
+  fontName: string,
+  options: FontLoadOptions = {}
+): string[] {
+  const weight = options.weight ?? 400;
+  const exactWeight = encodeURIComponent(`${fontName}:wght@${weight}`);
+  const variableWeight = encodeURIComponent(`${fontName}:wght@100..900`);
+
+  return [
+    `https://fonts.googleapis.com/css2?family=${exactWeight}`,
+    `https://fonts.googleapis.com/css2?family=${variableWeight}`,
+  ];
 }

@@ -4,6 +4,7 @@ export interface RenderOptions {
   boxWidth: number;
   boxHeight: number;
   color: string;
+  italic?: boolean;
 }
 
 export interface RenderResult {
@@ -52,9 +53,17 @@ export function autoSizeAndRender(
   text: string,
   options: RenderOptions
 ): RenderResult {
-  const { boxWidth, boxHeight, color } = options;
+  const { boxWidth, boxHeight, color, italic = false } = options;
   const lineHeightMultiplier = 1.2;
-  const padding = 4;
+  const outlineColor = "#000000";
+  const italicAngle = italic ? -10 : 0;
+  const italicTranslate = italic
+    ? Math.ceil(
+        (Math.tan((Math.abs(italicAngle) * Math.PI) / 180) * boxHeight) / 2
+      )
+    : 0;
+  const paddingForSize = (fontSize: number): number =>
+    Math.max(4, Math.ceil(fontSize * 0.18));
 
   let low = 1;
   let high = boxHeight;
@@ -62,6 +71,7 @@ export function autoSizeAndRender(
 
   while (low <= high) {
     const mid = Math.floor((low + high) / 2);
+    const padding = paddingForSize(mid);
     const lines = wrapText(font, text, boxWidth - padding * 2, mid);
     const totalHeight = lines.length * mid * lineHeightMultiplier;
 
@@ -79,8 +89,13 @@ export function autoSizeAndRender(
   }
 
   const fontSize = bestSize;
+  const padding = paddingForSize(fontSize);
+  const outlineWidth = Math.max(3, Math.round(fontSize * 0.2));
   const lines = wrapText(font, text, boxWidth - padding * 2, fontSize);
   const lineHeight = fontSize * lineHeightMultiplier;
+  const pathGroupTransform = italic
+    ? ` transform="translate(${italicTranslate} 0) skewX(${italicAngle})"`
+    : "";
 
   // Build SVG paths
   const totalTextHeight = lines.length * lineHeight;
@@ -103,7 +118,11 @@ export function autoSizeAndRender(
 
   const svg = [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${boxWidth}" height="${boxHeight}">`,
-    ...pathElements.map((p) => `  <g fill="${color}">${p}</g>`),
+    ...pathElements.map(
+      (p) =>
+        `  <g${pathGroupTransform} fill="none" stroke="${outlineColor}" stroke-width="${outlineWidth}" stroke-linejoin="round" stroke-linecap="round">${p}</g>`
+    ),
+    ...pathElements.map((p) => `  <g${pathGroupTransform} fill="${color}">${p}</g>`),
     "</svg>",
   ].join("\n");
 

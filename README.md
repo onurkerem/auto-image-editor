@@ -11,7 +11,7 @@ curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/
 Or pin a specific version:
 
 ```sh
-VERSION=1.0.0 curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh | sh
+VERSION=1.1.0 curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh | sh
 ```
 
 ## Uninstall
@@ -38,9 +38,10 @@ auto-image-editor add-text \
 | `--lang` | `tr` | Language code for locale-aware casing |
 | `--uppercase` | `true` | Convert text to uppercase |
 | `--font` | `Geom` | Google Font family name |
-| `--color` | `#FFFFFF` | Text color |
-| `--weight` | `600` | Font weight axis (100–900) |
+| `--color` | `#FFE600` | Text fill color. Text is rendered with a black outline by default. |
+| `--weight` | `900` | Font weight axis (100–900) |
 | `--width` | `100` | Font width axis percentage |
+| `--italic` | `true` | Apply italic slant to text |
 | `--top` | `60%` | Top edge of text box |
 | `--bottom` | `6%` | Bottom edge of text box |
 | `--left` | `10%` | Left edge of text box |
