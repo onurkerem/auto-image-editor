@@ -8,6 +8,7 @@
   },
   "files": ["dist"],
   "scripts": {
+    "prepublishOnly": "echo 'This package is distributed via GitHub Releases only. Use the release workflow.' && exit 1",
     "build": "tsc",
     "dev": "tsx src/cli.ts",
     "test": "vitest run",
