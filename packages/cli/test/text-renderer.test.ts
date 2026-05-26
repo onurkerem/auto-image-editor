@@ -12,7 +12,7 @@ describe("text renderer", () => {
 
   beforeEach(() => {
     const buffer = createTestFont();
-    font = opentype.parse(buffer);
+    font = opentype.parse(buffer.buffer);
   });
 
   describe("measureTextWidth", () => {

@@ -1,38 +1,84 @@
 import opentype from "opentype.js";
 
-/**
- * Creates a minimal test font with known glyph metrics for deterministic testing.
- *
- * - Characters: A-Z, a-z, Turkish chars (ĞğİıŞşÇçÖöÜü), space
- * - unitsPerEm: 1000
- * - Each glyph has advanceWidth = 600
- * - Glyph paths are simple squares (moveTo + lineTo + closePath)
- * - Notched (not composite) so opentype.js can parse the buffer back correctly
- */
-export function createTestFont(): ArrayBuffer {
-  const notaryGlyph = (unicode: number | undefined): opentype.Glyph => {
-    return new opentype.Glyph({
-      name: unicode != null ? String.fromCodePoint(unicode) : ".notdef",
-      unicode,
+export function createTestFont(
+  options: {
+    familyName?: string;
+  } = {}
+): Buffer {
+  const { familyName = "TestFont" } = options;
+
+  const notdefGlyph = new opentype.Glyph({
+    name: ".notdef",
+    unicode: 0,
+    advanceWidth: 650,
+    path: new opentype.Path(),
+  });
+
+  const glyphs: opentype.Glyph[] = [notdefGlyph];
+
+  // Add A-Z
+  for (let i = 65; i <= 90; i++) {
+    const char = String.fromCharCode(i);
+    const glyph = new opentype.Glyph({
+      name: char,
+      unicode: i,
       advanceWidth: 600,
       path: new opentype.Path(),
     });
-  };
-
-  // Characters to include in the font
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-    "abcdefghijklmnopqrstuvwxyz" +
-    " ĞğİıŞşÇçÖöÜü";
-
-  const glyphs: opentype.Glyph[] = [notaryGlyph(undefined)]; // .notdef at index 0
-
-  for (const ch of chars) {
-    glyphs.push(notaryGlyph(ch.codePointAt(0)));
+    glyphs.push(glyph);
   }
 
+  // Add a-z
+  for (let i = 97; i <= 122; i++) {
+    const char = String.fromCharCode(i);
+    const glyph = new opentype.Glyph({
+      name: char,
+      unicode: i,
+      advanceWidth: 500,
+      path: new opentype.Path(),
+    });
+    glyphs.push(glyph);
+  }
+
+  // Add Turkish special characters
+  const turkishChars = [
+    { name: "I.dot", unicode: 304, advanceWidth: 600 },   // İ
+    { name: "i.dotless", unicode: 305, advanceWidth: 500 }, // ı
+    { name: "G.breve", unicode: 286, advanceWidth: 700 },  // Ğ
+    { name: "g.breve", unicode: 287, advanceWidth: 500 },  // ğ
+    { name: "O.umlaut", unicode: 214, advanceWidth: 700 }, // Ö
+    { name: "o.umlaut", unicode: 246, advanceWidth: 500 }, // ö
+    { name: "U.umlaut", unicode: 220, advanceWidth: 700 }, // Ü
+    { name: "u.umlaut", unicode: 252, advanceWidth: 500 }, // ü
+    { name: "S.cedilla", unicode: 350, advanceWidth: 600 },  // Ş
+    { name: "s.cedilla", unicode: 351, advanceWidth: 500 },  // ş
+    { name: "C.cedilla", unicode: 199, advanceWidth: 700 },  // Ç
+    { name: "c.cedilla", unicode: 231, advanceWidth: 500 },  // ç
+  ];
+
+  for (const tc of turkishChars) {
+    glyphs.push(
+      new opentype.Glyph({
+        name: tc.name,
+        unicode: tc.unicode,
+        advanceWidth: tc.advanceWidth,
+        path: new opentype.Path(),
+      })
+    );
+  }
+
+  // Add space
+  glyphs.push(
+    new opentype.Glyph({
+      name: "space",
+      unicode: 32,
+      advanceWidth: 300,
+      path: new opentype.Path(),
+    })
+  );
+
   const font = new opentype.Font({
-    familyName: "TestFont",
+    familyName,
     styleName: "Regular",
     unitsPerEm: 1000,
     ascender: 800,
@@ -40,5 +86,5 @@ export function createTestFont(): ArrayBuffer {
     glyphs,
   });
 
-  return font.toArrayBuffer();
+  return Buffer.from(font.toArrayBuffer());
 }
