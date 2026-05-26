@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -e
 
-REPO="auto-image-editor"
+REPO="onurkerem/auto-image-editor"
 GITHUB_API="https://api.github.com/repos"
 INSTALL_DIR="$HOME/.auto-image-editor"
 BIN_NAME="auto-image-editor"

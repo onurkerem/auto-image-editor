@@ -4,8 +4,20 @@ A CLI tool for adding text overlays to images with support for Google Fonts, var
 
 ## Install
 
-```bash
-npm install -g auto-image-editor
+```sh
+curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/main/install.sh | sh
+```
+
+Or pin a specific version:
+
+```sh
+VERSION=1.0.0 curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/main/install.sh | sh
+```
+
+## Uninstall
+
+```sh
+rm -rf ~/.auto-image-editor /usr/local/bin/auto-image-editor
 ```
 
 ## Usage
@@ -21,8 +33,7 @@ auto-image-editor add-text \
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--input` | required | Source image path (PNG, JPEG, WebP) |
-| `--output` | required | Output image path |
-| `--format` | auto | Output format: jpeg, png, webp |
+| `--output` | required | Output image path (format inferred from extension) |
 | `--text` | required | Text to overlay |
 | `--lang` | `tr` | Language code for locale-aware casing |
 | `--uppercase` | `true` | Convert text to uppercase |
