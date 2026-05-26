@@ -32,8 +32,8 @@ auto-image-editor add-text \
 | `--width` | `100` | Font width axis percentage |
 | `--top` | `60%` | Top edge of text box |
 | `--bottom` | `6%` | Bottom edge of text box |
-| `--left` | `0%` | Left edge of text box |
-| `--right` | `0%` | Right edge of text box |
+| `--left` | `10%` | Left edge of text box |
+| `--right` | `10%` | Right edge of text box |
 
 ## Development
 
