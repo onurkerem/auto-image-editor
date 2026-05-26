@@ -23,7 +23,7 @@ export function registerAddTextCommand(program: Command): void {
     .option("--top <value>", "Top edge of text box", "60%")
     .option("--bottom <value>", "Bottom edge of text box", "6%")
     .option("--left <value>", "Left edge of text box", "0%")
-    .option("--right <value>", "Right edge of text box", "100%")
+    .option("--right <value>", "Right edge of text box", "0%")
     .action(async (opts) => {
       try {
         await addTextAction(opts);
