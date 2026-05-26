@@ -73,7 +73,7 @@ jobs:
 
             ## Install
             ```sh
-            curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/main/install.sh | sh
+            curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/master/install.sh | sh
             ```
           files: |
             auto-image-editor-${{ steps.version.outputs.version }}.tar.gz

@@ -5,13 +5,13 @@ A CLI tool for adding text overlays to images with support for Google Fonts, var
 ## Install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh | sh
 ```
 
 Or pin a specific version:
 
 ```sh
-VERSION=1.0.0 curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/main/install.sh | sh
+VERSION=1.0.0 curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh | sh
 ```
 
 ## Uninstall
