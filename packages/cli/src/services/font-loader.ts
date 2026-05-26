@@ -22,6 +22,9 @@ export function validateFontAxes(
   axes: FontAxisInfo[],
   requested: { weight?: number; width?: number }
 ): void {
+  // Static fonts have no axes — skip validation entirely
+  if (axes.length === 0) return;
+
   const weightAxis = axes.find((a) => a.tag === "wght");
   const widthAxis = axes.find((a) => a.tag === "wdth");
 
@@ -74,7 +77,8 @@ export async function loadFont(
   }
 
   const buffer = await readFile(fontPath);
-  const font = opentype.parse(buffer);
+  const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+  const font = opentype.parse(arrayBuffer);
 
   const axes = extractAxes(font);
   validateFontAxes(fontName, axes, options);
@@ -102,8 +106,9 @@ async function downloadFont(
 
   const cssResponse = await fetch(cssUrl, {
     headers: {
+      // Android UA to get direct TTF URLs (opentype.js v1 does not support WOFF2/EOT)
       "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0",
+        "Mozilla/5.0 (Linux; U; Android 2.2) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
     },
   });
 
@@ -114,7 +119,7 @@ async function downloadFont(
   }
 
   const css = await cssResponse.text();
-  const urlMatch = css.match(/src:\s*url\(([^)]+)\)/);
+  const urlMatch = css.match(/src:\s*url\(([^)]+)\)\s*format\('truetype'\)/);
   if (!urlMatch) {
     throw new Error(`Could not extract font file URL for "${fontName}" from Google Fonts CSS.`);
   }
