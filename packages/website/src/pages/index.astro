@@ -50,14 +50,14 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
       <h2 class="text-3xl md:text-4xl font-headline font-bold mb-16 text-center text-on-surface tracking-tight">
         Core Capabilities
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <!-- Google Fonts -->
         <div class="bg-surface-container-lowest p-8 border border-surface-container-highest transition-colors hover:border-outline-variant/30 group">
           <div class="w-12 h-12 bg-surface-container flex items-center justify-center rounded mb-6 text-on-surface group-hover:bg-primary group-hover:text-on-primary transition-colors">
             <span class="material-symbols-outlined">text_fields</span>
           </div>
           <h3 class="text-xl font-headline font-bold mb-3 text-on-surface">Google Fonts</h3>
-          <p class="font-body text-on-surface-variant leading-relaxed">
+          <p class="font-body text-on-surface-variant leading-relaxed text-sm">
             Use any Google Font family by name. Fonts are downloaded and cached automatically — no manual installation required.
           </p>
         </div>
@@ -67,7 +67,7 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
             <span class="material-symbols-outlined">tune</span>
           </div>
           <h3 class="text-xl font-headline font-bold mb-3 text-on-surface">Variable Font Axes</h3>
-          <p class="font-body text-on-surface-variant leading-relaxed">
+          <p class="font-body text-on-surface-variant leading-relaxed text-sm">
             Fine-tune weight (100–900) and width axes for precise typographic control. Leverages variable font technology for smooth interpolation.
           </p>
         </div>
@@ -77,8 +77,18 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
             <span class="material-symbols-outlined">language</span>
           </div>
           <h3 class="text-xl font-headline font-bold mb-3 text-on-surface">Locale-Aware Casing</h3>
-          <p class="font-body text-on-surface-variant leading-relaxed">
+          <p class="font-body text-on-surface-variant leading-relaxed text-sm">
             Uppercase conversion respects language rules. Turkish dotted-i, German sharp-s, and other locale-specific behavior handled correctly.
+          </p>
+        </div>
+        <!-- Background Removal -->
+        <div class="bg-surface-container-lowest p-8 border border-surface-container-highest transition-colors hover:border-outline-variant/30 group">
+          <div class="w-12 h-12 bg-surface-container flex items-center justify-center rounded mb-6 text-on-surface group-hover:bg-primary group-hover:text-on-primary transition-colors">
+            <span class="material-symbols-outlined">wallpaper</span>
+          </div>
+          <h3 class="text-xl font-headline font-bold mb-3 text-on-surface">Background Removal</h3>
+          <p class="font-body text-on-surface-variant leading-relaxed text-sm">
+            Remove solid backgrounds with chroma keying. Automatically detects color from image edges or accepts custom hex overrides.
           </p>
         </div>
       </div>
@@ -140,6 +150,20 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
               <span class="text-on-surface-variant/70">&nbsp;&nbsp;--text</span> <span class="text-inverse-on-surface">"İstanbul"</span> <span class="text-on-surface-variant/70">\</span><br />
               <span class="text-on-surface-variant/70">&nbsp;&nbsp;--lang</span> <span class="text-inverse-on-surface">tr</span>
             </div>
+            <div>
+              <span class="text-on-surface-variant opacity-70"># Remove solid background (auto-detect edges)</span><br />
+              <span class="text-tertiary-fixed">$</span> <span class="text-[#8b9cf7]">auto-image-editor</span> <span class="text-inverse-on-surface">remove-bg</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--input</span> <span class="text-inverse-on-surface">logo.png</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--output</span> <span class="text-inverse-on-surface">logo-trans.png</span>
+            </div>
+            <div>
+              <span class="text-on-surface-variant opacity-70"># Remove custom background color with tolerance</span><br />
+              <span class="text-tertiary-fixed">$</span> <span class="text-[#8b9cf7]">auto-image-editor</span> <span class="text-inverse-on-surface">remove-bg</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--input</span> <span class="text-inverse-on-surface">photo.jpg</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--output</span> <span class="text-inverse-on-surface">photo-trans.png</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--bg</span> <span class="text-inverse-on-surface">"#00FF00"</span> <span class="text-on-surface-variant/70">\</span><br />
+              <span class="text-on-surface-variant/70">&nbsp;&nbsp;--tolerance</span> <span class="text-inverse-on-surface">25</span>
+            </div>
           </div>
         </div>
       </div>
@@ -155,7 +179,18 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
       <p class="font-body text-lg text-on-surface-variant mb-16 text-center max-w-3xl mx-auto">
         Every parameter has sensible defaults. Override only what you need.
       </p>
-      <div class="bg-surface-container-lowest p-12 border border-surface-container-highest">
+      <!-- Subcommand Options Tabs -->
+      <div class="flex justify-center gap-4 mb-8">
+        <button id="tab-add-text" class="px-6 py-2 rounded-full border border-primary bg-primary text-on-primary font-headline font-bold text-sm transition-all cursor-pointer shadow-sm">
+          add-text command
+        </button>
+        <button id="tab-remove-bg" class="px-6 py-2 rounded-full border border-outline hover:bg-surface-container text-on-surface font-headline font-bold text-sm transition-all cursor-pointer">
+          remove-bg command
+        </button>
+      </div>
+
+      <!-- add-text options -->
+      <div id="options-add-text" class="bg-surface-container-lowest p-12 border border-surface-container-highest transition-all duration-300">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
           <div class="space-y-6">
             <div>
@@ -234,8 +269,46 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
               <div class="flex items-center gap-2 mb-1">
                 <code class="font-mono text-sm text-tertiary font-semibold">--left / --right</code>
                 <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">10% / 10%</span>
+                <p class="font-body text-sm text-on-surface-variant">Horizontal text box edges (percentage or pixels)</p>
               </div>
-              <p class="font-body text-sm text-on-surface-variant">Horizontal text box edges (percentage or pixels)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- remove-bg options -->
+      <div id="options-remove-bg" class="bg-surface-container-lowest p-12 border border-surface-container-highest transition-all duration-300 hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
+          <div class="space-y-6">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--input</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">required</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Source image path (PNG, JPEG, WebP)</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--output</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">required</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Output transparent image path (PNG or WebP only)</p>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--bg</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: auto-detect</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Background color to remove as a hex code (e.g. #FFFFFF or FFFFFF)</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <code class="font-mono text-sm text-tertiary font-semibold">--tolerance</code>
+                <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">default: 15</span>
+              </div>
+              <p class="font-body text-sm text-on-surface-variant">Color similarity threshold (0-255) for chroma keying</p>
             </div>
           </div>
         </div>
@@ -329,6 +402,7 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
 </Layout>
 
 <script>
+  // Hero copy button
   document.getElementById("hero-copy-btn")?.addEventListener("click", async (e) => {
     const btn = e.currentTarget as HTMLElement;
     const code = `curl -fsSL https://raw.githubusercontent.com/onurkerem/auto-image-editor/master/install.sh | sh`;
@@ -339,4 +413,40 @@ const installCommand = "curl -fsSL https://raw.githubusercontent.com/onurkerem/a
       setTimeout(() => { icon.textContent = "content_copy"; }, 2000);
     }
   });
+
+  // Options tab switcher
+  const tabAddText = document.getElementById("tab-add-text");
+  const tabRemoveBg = document.getElementById("tab-remove-bg");
+  const optionsAddText = document.getElementById("options-add-text");
+  const optionsRemoveBg = document.getElementById("options-remove-bg");
+
+  if (tabAddText && tabRemoveBg && optionsAddText && optionsRemoveBg) {
+    tabAddText.addEventListener("click", () => {
+      // Activate add-text tab
+      tabAddText.classList.add("bg-primary", "text-on-primary", "border-primary", "shadow-sm");
+      tabAddText.classList.remove("border-outline", "text-on-surface");
+
+      // Deactivate remove-bg tab
+      tabRemoveBg.classList.remove("bg-primary", "text-on-primary", "border-primary", "shadow-sm");
+      tabRemoveBg.classList.add("border-outline", "text-on-surface");
+
+      // Toggle options visibility
+      optionsAddText.classList.remove("hidden");
+      optionsRemoveBg.classList.add("hidden");
+    });
+
+    tabRemoveBg.addEventListener("click", () => {
+      // Activate remove-bg tab
+      tabRemoveBg.classList.add("bg-primary", "text-on-primary", "border-primary", "shadow-sm");
+      tabRemoveBg.classList.remove("border-outline", "text-on-surface");
+
+      // Deactivate add-text tab
+      tabAddText.classList.remove("bg-primary", "text-on-primary", "border-primary", "shadow-sm");
+      tabAddText.classList.add("border-outline", "text-on-surface");
+
+      // Toggle options visibility
+      optionsRemoveBg.classList.remove("hidden");
+      optionsAddText.classList.add("hidden");
+    });
+  }
 </script>

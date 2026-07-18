@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import sharp from "sharp";
 import { addTextAction } from "../src/commands/add-text.js";
+import { removeBgAction } from "../src/commands/remove-bg.js";
 import { unlink, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -94,5 +95,48 @@ describe("integration: add-text command", () => {
         right: "5%",
       })
     ).rejects.toThrow("Input file not found");
+  });
+
+  describe("integration: remove-bg command", () => {
+    const pngOutputPath = join(testDir, "remove-bg-out.png");
+
+    it("removes background and outputs PNG successfully", async () => {
+      await removeBgAction({
+        input: inputPath,
+        output: pngOutputPath,
+        bg: "#326496", // Matches inputPath background color r: 50, g: 100, b: 150 -> #326496
+        tolerance: "10",
+      });
+
+      const metadata = await sharp(pngOutputPath).metadata();
+      expect(metadata.width).toBe(1000);
+      expect(metadata.height).toBe(800);
+      expect(metadata.format).toBe("png");
+
+      // Cleanup
+      await unlink(pngOutputPath).catch(() => {});
+    });
+
+    it("errors on output format that does not support transparency (JPEG)", async () => {
+      await expect(
+        removeBgAction({
+          input: inputPath,
+          output: outputPath, // outputPath resolves to jpeg (.jpg)
+          bg: "#326496",
+          tolerance: "10",
+        })
+      ).rejects.toThrow("JPEG format does not support alpha transparency");
+    });
+
+    it("errors on invalid tolerance", async () => {
+      await expect(
+        removeBgAction({
+          input: inputPath,
+          output: pngOutputPath,
+          bg: "#326496",
+          tolerance: "300",
+        })
+      ).rejects.toThrow("Tolerance must be a number between 0 and 255");
+    });
   });
 });
